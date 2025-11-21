@@ -11,14 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import apiClass.GetClu;
 
-@WebServlet("/tan")
+@WebServlet("/Gyutan2025")
 public class Gyutan2025 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+            
     public Gyutan2025() {
         super();
     }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().println("doGet method.");
@@ -34,17 +33,25 @@ public class Gyutan2025 extends HttpServlet {
 		if(Objects.isNull(param)) {
 			param="";
 		}
-
+		
 		// paramを送ってCLUからデータを取得する
 		String detected = GetClu.getLanguageText(param);
-
 		
-		// 結果（スキーム）をコンソールとWebブラウザにひょうじ
+		// 結果（スキーム）をコンソールに表示
 		System.out.println(detected);
-		response.getWriter().println(detected);
 		
-		
-	
+		// 結果（スキーム）によってページを遷移させる
+		if ("ABOUT".equals(detected)) {
+			request.getRequestDispatcher("store_info.html").forward(request, response);
+		} else if ("MENU".equals(detected)) {
+			request.getRequestDispatcher("menu.html").forward(request, response);
+		} else if ("SHOP".equals(detected)) {
+			request.getRequestDispatcher("online_store.html").forward(request, response);
+		} else if ("HISTORY".equals(detected)) {
+			request.getRequestDispatcher("history.html").forward(request, response);
+		} else {
+			// いずれのインテントにも一致しない場合はトップページに遷移
+			request.getRequestDispatcher("index.html").forward(request, response);
+		}
 	}
-
 }
